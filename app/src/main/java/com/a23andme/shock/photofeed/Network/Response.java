@@ -3,6 +3,7 @@ package com.a23andme.shock.photofeed.Network;
 import java.util.List;
 
 public class Response {
+
     public static class Data {
         List<Photo> data;
 
@@ -11,10 +12,12 @@ public class Response {
         }
     }
 
+
     public static class Photo {
         Likes likes;
         String media_id;
         Images images;
+        long createdTime;
 
         public Likes getLikes() {
             return likes;
@@ -27,7 +30,12 @@ public class Response {
         public String getMedia_id() {
             return media_id;
         }
+
+        public long getCreatedTime() {
+            return createdTime;
+        }
     }
+
 
     public static class Likes {
         int count;
@@ -36,6 +44,7 @@ public class Response {
             return count;
         }
     }
+
 
     public static class Images {
         Image standard_resolution;
@@ -50,6 +59,7 @@ public class Response {
         }
     }
 
+
     public static class Image {
         int height, width;
         String url;
@@ -59,6 +69,7 @@ public class Response {
         }
     }
 
+
     public static class StatusResponse {
         private static final int OK_STATUS_CODE = 200;
         Meta meta;
@@ -67,6 +78,7 @@ public class Response {
             return meta.code == 200;
         }
     }
+
 
     public static class Meta {
         int code;
