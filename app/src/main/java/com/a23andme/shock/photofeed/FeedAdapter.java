@@ -63,7 +63,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.PhotoViewHolde
         Collections.sort(photos, new Comparator<Response.Photo>() {
             @Override
             public int compare(Response.Photo photo1, Response.Photo photo2) {
-                long diff = photo1.getCreatedTime() - photo2.getCreatedTime();
+                long diff = photo2.getCreatedTime() - photo1.getCreatedTime();
                 return diff < 0 ? -1 : (diff > 1 ? 1 : 0);
             }
         });
