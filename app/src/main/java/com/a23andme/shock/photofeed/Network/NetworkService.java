@@ -14,6 +14,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.a23andme.shock.photofeed.Network.NetworkApi.API_BASE_URL;
+import static com.a23andme.shock.photofeed.Network.NetworkApi.RESPONSE_CODE_UNAUTHORIZED;
 
 import com.a23andme.shock.photofeed.Network.Response.*;
 
@@ -80,15 +81,14 @@ public class NetworkService implements ApiRequester {
         getApi().getRecentUserPhotos().enqueue(new Callback<Data>() {
             @Override
             public void onResponse(@NonNull Call<Data> call, @NonNull retrofit2.Response<Data> response) {
-                if (subscriber != null) {
+                getNewAuthTokenIfNeeded(response);
+                if (subscriber != null && response.body() != null) {
                     subscriber.onPhotoDataReceived(response.body());
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<Data> call, @NonNull Throwable t) {
-                getNewAuthToken();
-            }
+            public void onFailure(@NonNull Call<Data> call, @NonNull Throwable t) { }
         });
     }
 
@@ -97,12 +97,12 @@ public class NetworkService implements ApiRequester {
         getApi().postLike(mediaId).enqueue(new Callback<StatusResponse>() {
             @Override
             public void onResponse(@NonNull Call<StatusResponse> call,
-                                   @NonNull retrofit2.Response<StatusResponse> response) {}
+                                   @NonNull retrofit2.Response<StatusResponse> response) {
+                getNewAuthTokenIfNeeded(response);
+            }
 
             @Override
-            public void onFailure(@NonNull Call<StatusResponse> call, @NonNull Throwable t) {
-                getNewAuthToken();
-            }
+            public void onFailure(@NonNull Call<StatusResponse> call, @NonNull Throwable t) { }
         });
     }
 
@@ -111,18 +111,20 @@ public class NetworkService implements ApiRequester {
         getApi().removeLike(mediaId).enqueue(new Callback<StatusResponse>() {
             @Override
             public void onResponse(@NonNull Call<StatusResponse> call,
-                                   @NonNull retrofit2.Response<StatusResponse> response) {}
+                                   @NonNull retrofit2.Response<StatusResponse> response) {
+                getNewAuthTokenIfNeeded(response);
+            }
 
             @Override
-            public void onFailure(@NonNull Call<StatusResponse> call, @NonNull Throwable t) {
-                getNewAuthToken();
-            }
+            public void onFailure(@NonNull Call<StatusResponse> call, @NonNull Throwable t) { }
         });
     }
 
-    private void getNewAuthToken() {
-        if (subscriber != null) {
-            subscriber.newAuthTokenNeeded();
+    private <T> void getNewAuthTokenIfNeeded(retrofit2.Response<T> response) {
+        if (response.code() == RESPONSE_CODE_UNAUTHORIZED) {
+            if (subscriber != null) {
+                subscriber.newAuthTokenNeeded();
+            }
         }
     }
 }

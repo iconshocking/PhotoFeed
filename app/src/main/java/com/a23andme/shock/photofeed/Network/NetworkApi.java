@@ -16,6 +16,7 @@ public interface NetworkApi {
     public static final String AMPERSAND = "&";
     public static final String EQUALS = "=";
     public static final String POST_METHOD = "POST";
+    public static final int RESPONSE_CODE_UNAUTHORIZED = 401;
 
     public static final String LOGIN_URL =
             "https://insta23prod.auth.us-west-2.amazoncognito.com/login?response_type=token" +
