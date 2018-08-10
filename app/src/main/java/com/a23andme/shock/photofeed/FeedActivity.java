@@ -14,6 +14,8 @@ import com.a23andme.shock.photofeed.Network.Response;
 
 import java.util.List;
 
+import static com.a23andme.shock.photofeed.LoginLogoutActivity.IS_LOGOUT_EXTRA;
+
 public class FeedActivity extends AppCompatActivity implements PhotoView, SharedPreferencesWrapper {
     public static final int LOGIN_INTENT_REQUEST_CODE = 101;
     public static final String AUTH_TOKEN_EXTRA = "authToken";
@@ -48,7 +50,8 @@ public class FeedActivity extends AppCompatActivity implements PhotoView, Shared
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_logout:
-                // TODO
+                presenter.clearAuthToken();
+                displayLogin(true);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -56,8 +59,9 @@ public class FeedActivity extends AppCompatActivity implements PhotoView, Shared
     }
 
     @Override
-    public void displayLogin() {
-        Intent intent = new Intent(this, LoginActivity.class);
+    public void displayLogin(boolean logoutFirst) {
+        Intent intent = new Intent(this, LoginLogoutActivity.class);
+        intent.putExtra(IS_LOGOUT_EXTRA, logoutFirst);
         startActivityForResult(intent, LOGIN_INTENT_REQUEST_CODE);
     }
 

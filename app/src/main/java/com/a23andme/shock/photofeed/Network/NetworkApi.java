@@ -11,6 +11,7 @@ public interface NetworkApi {
     public static final String CLIENT_ID_PREFIX = "client_id";
     public static final String LOGIN_AND_LOGOUT_REDIRECT_URI = "https://www.23andme.com/";
     public static final String REDIRECT_URI_PREFIX = "redirect_uri";
+    public static final String LOGOUT_REDIRECT_URI_PREFIX = "logout_uri";
     public static final String ID_TOKEN_PREFIX = "#id_token";
     public static final String AMPERSAND = "&";
     public static final String EQUALS = "=";
@@ -24,7 +25,7 @@ public interface NetworkApi {
     public static final String LOGOUT_URL =
             "https://insta23prod.auth.us-west-2.amazoncognito.com/logout?response_type=token" +
                     AMPERSAND + CLIENT_ID_PREFIX + EQUALS + CLIENT_ID +
-                    AMPERSAND + REDIRECT_URI_PREFIX + EQUALS + LOGIN_AND_LOGOUT_REDIRECT_URI;
+                    AMPERSAND + LOGOUT_REDIRECT_URI_PREFIX + EQUALS + LOGIN_AND_LOGOUT_REDIRECT_URI;
 
     public static final String API_BASE_URL = "https://kqlpe1bymk.execute-api.us-west-2.amazonaws.com/Prod/";
 

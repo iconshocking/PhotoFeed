@@ -62,4 +62,8 @@ public class PhotosModel implements ApiResponseSubscriber {
         preferencesWrapper.setStringValueForKey(AUTH_TOKEN_EXTRA, authToken);
         setupApiService(authToken);
     }
+
+    public void clearAuthToken() {
+        preferencesWrapper.setStringValueForKey(AUTH_TOKEN_EXTRA, null);
+    }
 }

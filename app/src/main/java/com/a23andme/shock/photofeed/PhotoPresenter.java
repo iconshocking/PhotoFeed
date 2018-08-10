@@ -21,8 +21,12 @@ public class PhotoPresenter {
         }
     }
 
+    public void clearAuthToken() {
+        photosModel.clearAuthToken();
+    }
+
     public void needNewAuthToken() {
-        photoView.displayLogin();
+        photoView.displayLogin(false);
     }
 
     public void onPhotosReceived(List<Response.Photo> photos) {
