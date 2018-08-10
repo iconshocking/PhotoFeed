@@ -28,8 +28,6 @@ public class NetworkService implements ApiRequester {
 
     private ApiResponseSubscriber subscriber;
 
-    private String authToken;
-
     private NetworkService() {}
 
     public static NetworkService getInstance() {
@@ -42,7 +40,6 @@ public class NetworkService implements ApiRequester {
                 .addConverterFactory(GsonConverterFactory.create());
 
         if (authToken != null && authToken.length() != 0) {
-            getInstance().setAuthToken(authToken);
             Interceptor interceptor = new Interceptor() {
                 private String mAuthToken = authToken;
 
@@ -76,10 +73,6 @@ public class NetworkService implements ApiRequester {
 
     public void setSubscriber(ApiResponseSubscriber subscriber) {
         this.subscriber = subscriber;
-    }
-
-    public void setAuthToken(String authToken) {
-        this.authToken = authToken;
     }
 
     @Override
