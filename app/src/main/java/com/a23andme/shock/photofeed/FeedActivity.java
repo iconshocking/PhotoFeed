@@ -19,7 +19,7 @@ import java.util.List;
 
 public class FeedActivity extends AppCompatActivity implements PhotoView {
     public static final int LOGIN_INTENT_REQUEST_CODE = 101;
-    public static final String LOGIN_INTENT_AUTH_TOKEN_EXTRA = "authToken";
+    public static final String AUTH_TOKEN_EXTRA = "authToken";
     public static final int FEED_COLUMN_COUNT = 2;
 
     private PhotoPresenter presenter;
@@ -44,7 +44,7 @@ public class FeedActivity extends AppCompatActivity implements PhotoView {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == LOGIN_INTENT_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                String authToken = data.getStringExtra(LOGIN_INTENT_AUTH_TOKEN_EXTRA);
+                String authToken = data.getStringExtra(AUTH_TOKEN_EXTRA);
                 if (!TextUtils.isEmpty(authToken)) {
                     NetworkService.createApiService(NetworkApi.class, authToken);
                     ApiRequester apiRequester = NetworkService.getInstance();
