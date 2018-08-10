@@ -1,8 +1,6 @@
 package com.a23andme.shock.photofeed.Network;
 
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
-import android.util.Log;
 
 import java.io.IOException;
 
@@ -14,7 +12,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 import static com.a23andme.shock.photofeed.Network.NetworkApi.API_BASE_URL;
 
@@ -31,18 +28,21 @@ public class NetworkService implements ApiRequester {
 
     private ApiResponseSubscriber subscriber;
 
+    private String authToken;
+
     private NetworkService() {}
 
     public static NetworkService getInstance() {
         return networkService;
     }
 
-    public static void createApiService(Class<NetworkApi> serviceClass, final String authToken) {
+    public static NetworkService createApiService(Class<NetworkApi> serviceClass, final String authToken) {
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create());
 
-        if (!TextUtils.isEmpty(authToken)) {
+        if (authToken != null && authToken.length() != 0) {
+            getInstance().setAuthToken(authToken);
             Interceptor interceptor = new Interceptor() {
                 private String mAuthToken = authToken;
 
@@ -67,44 +67,8 @@ public class NetworkService implements ApiRequester {
 
         networkApi = builder.build().create(serviceClass);
 
-//        createTestApiService(serviceClass, authToken);
+        return getInstance();
     }
-
-//    private static NetworkApi testApi;
-//
-//    private static void createTestApiService(Class<NetworkApi> serviceClass, final String authToken) {
-//        Retrofit.Builder builder = new Retrofit.Builder()
-//                .baseUrl(API_BASE_URL)
-//                .addConverterFactory(GsonConverterFactory.create());
-//
-//        if (!TextUtils.isEmpty(authToken)) {
-//            Interceptor interceptor = new Interceptor() {
-//                private String mAuthToken = authToken;
-//
-//                @Override
-//                public Response intercept(Chain chain) throws IOException {
-//                    Request original = chain.request();
-//
-//                    Request.Builder builder = original.newBuilder()
-//                            .header("Authorization", mAuthToken);
-//
-//                    Request request = builder.build();
-//                    return chain.proceed(request);
-//                }
-//            };
-//
-//            if (!httpClient.interceptors().contains(interceptor)) {
-//                httpClient.addInterceptor(interceptor);
-//                builder.client(httpClient.build());
-//            }
-//        }
-//
-//        testApi = builder.build().create(serviceClass);
-//    }
-//
-//    private NetworkApi getTestApi() {
-//        return testApi;
-//    }
 
     private NetworkApi getApi() {
         return networkApi;
@@ -112,6 +76,10 @@ public class NetworkService implements ApiRequester {
 
     public void setSubscriber(ApiResponseSubscriber subscriber) {
         this.subscriber = subscriber;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
     }
 
     @Override
@@ -125,7 +93,9 @@ public class NetworkService implements ApiRequester {
             }
 
             @Override
-            public void onFailure(@NonNull Call<Data> call, @NonNull Throwable t) {}
+            public void onFailure(@NonNull Call<Data> call, @NonNull Throwable t) {
+                getNewAuthToken();
+            }
         });
     }
 
@@ -134,10 +104,12 @@ public class NetworkService implements ApiRequester {
         getApi().postLike(mediaId).enqueue(new Callback<StatusResponse>() {
             @Override
             public void onResponse(@NonNull Call<StatusResponse> call,
-                                   @NonNull retrofit2.Response<StatusResponse> response) { }
+                                   @NonNull retrofit2.Response<StatusResponse> response) {}
 
             @Override
-            public void onFailure(@NonNull Call<StatusResponse> call, @NonNull Throwable t) { }
+            public void onFailure(@NonNull Call<StatusResponse> call, @NonNull Throwable t) {
+                getNewAuthToken();
+            }
         });
     }
 
@@ -149,7 +121,15 @@ public class NetworkService implements ApiRequester {
                                    @NonNull retrofit2.Response<StatusResponse> response) {}
 
             @Override
-            public void onFailure(@NonNull Call<StatusResponse> call, @NonNull Throwable t) { }
+            public void onFailure(@NonNull Call<StatusResponse> call, @NonNull Throwable t) {
+                getNewAuthToken();
+            }
         });
+    }
+
+    private void getNewAuthToken() {
+        if (subscriber != null) {
+            subscriber.newAuthTokenNeeded();
+        }
     }
 }

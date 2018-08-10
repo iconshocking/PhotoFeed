@@ -5,6 +5,7 @@ import com.a23andme.shock.photofeed.Network.Response;
 import java.util.List;
 
 public interface PhotoView {
+    void displayLogin();
     void likeClicked(Response.Photo photo);
-    void displayPhotoData(List<Response.Photo> photos);
+    void displayPhotosData(List<Response.Photo> photos);
 }

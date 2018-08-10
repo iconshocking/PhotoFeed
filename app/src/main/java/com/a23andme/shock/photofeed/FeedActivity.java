@@ -2,22 +2,19 @@ package com.a23andme.shock.photofeed;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.a23andme.shock.photofeed.Network.ApiRequester;
-import com.a23andme.shock.photofeed.Network.NetworkApi;
-import com.a23andme.shock.photofeed.Network.NetworkService;
 import com.a23andme.shock.photofeed.Network.Response;
 
 import java.util.List;
 
-public class FeedActivity extends AppCompatActivity implements PhotoView {
+public class FeedActivity extends AppCompatActivity implements PhotoView, SharedPreferencesWrapper {
     public static final int LOGIN_INTENT_REQUEST_CODE = 101;
     public static final String AUTH_TOKEN_EXTRA = "authToken";
     public static final int FEED_COLUMN_COUNT = 2;
@@ -35,25 +32,10 @@ public class FeedActivity extends AppCompatActivity implements PhotoView {
         recyclerView.setLayoutManager(new GridLayoutManager(
                 this, FEED_COLUMN_COUNT, LinearLayoutManager.VERTICAL, false));
 
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivityForResult(intent, LOGIN_INTENT_REQUEST_CODE);
-    }
+        presenter = new PhotoPresenter(this, this);
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == LOGIN_INTENT_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                String authToken = data.getStringExtra(AUTH_TOKEN_EXTRA);
-                if (!TextUtils.isEmpty(authToken)) {
-                    NetworkService.createApiService(NetworkApi.class, authToken);
-                    ApiRequester apiRequester = NetworkService.getInstance();
-                    presenter = new PhotoPresenter(this, apiRequester);
-                    adapter = new FeedAdapter(presenter);
-                    recyclerView.setAdapter(adapter);
-                }
-            }
-        }
+        adapter = new FeedAdapter(presenter);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -74,12 +56,39 @@ public class FeedActivity extends AppCompatActivity implements PhotoView {
     }
 
     @Override
+    public void displayLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivityForResult(intent, LOGIN_INTENT_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == LOGIN_INTENT_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                String authToken = data.getStringExtra(AUTH_TOKEN_EXTRA);
+                presenter.newAuthTokenReceived(authToken);
+            }
+        }
+    }
+
+    @Override
     public void likeClicked(Response.Photo photo) {
 
     }
 
     @Override
-    public void displayPhotoData(List<Response.Photo> photos) {
+    public void displayPhotosData(List<Response.Photo> photos) {
         adapter.addFeedItems(photos);
+    }
+
+    @Override
+    public String getStringValueForKey(String key) {
+        return PreferenceManager.getDefaultSharedPreferences(this).getString(key, null);
+    }
+
+    @Override
+    public void setStringValueForKey(String key, String value) {
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putString(key, value).apply();
     }
 }
