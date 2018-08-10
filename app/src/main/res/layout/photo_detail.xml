@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <ImageView
+        android:id="@+id/photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitXY"/>
+
+    <ImageView
+        android:id="@+id/like_icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@+id/photo"
+        android:layout_alignParentLeft="true"
+        android:padding="4dp"
+        android:src="@drawable/heart"/>
+
+    <TextView
+        android:id="@+id/like_text"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|left"
+        android:layout_below="@+id/photo"
+        android:layout_toRightOf="@+id/like_icon"
+        android:layout_alignBottom="@+id/like_icon"
+        android:layout_alignTop="@+id/like_icon"
+        android:drawablePadding="16dp"
+        android:textStyle="bold"
+        android:padding="4dp"
+        android:paddingLeft="8dp"
+        android:textSize="24sp"/>
+
+    <TextView
+        android:id="@+id/post_time_text"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|right"
+        android:layout_below="@+id/photo"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@id/like_text"
+        android:layout_alignTop="@+id/like_text"
+        android:drawablePadding="16dp"
+        android:textStyle="bold"
+        android:padding="4dp"
+        android:paddingLeft="8dp"
+        android:textSize="24sp"/>
+
+</RelativeLayout>

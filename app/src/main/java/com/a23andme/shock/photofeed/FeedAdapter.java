@@ -48,7 +48,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.PhotoViewHolde
         holder.likeIcon.getDrawable().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
 
         Glide.with(holder.itemView)
-                .load(photo.getImages().getStandard_resolution().getUrl())
+                .load(photo.getImages().getLow_resolution().getUrl())
                 .transition(withCrossFade())
                 .into(holder.thumbnail);
     }
@@ -78,9 +78,16 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.PhotoViewHolde
 
         public PhotoViewHolder(final View itemView) {
             super(itemView);
-            thumbnail = itemView.findViewById(R.id.thumbnail);
+            thumbnail = itemView.findViewById(R.id.photo);
             likeIcon = itemView.findViewById(R.id.like_icon);
             likeText = itemView.findViewById(R.id.like_text);
+
+            thumbnail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    presenter.photoClicked(photo);
+                }
+            });
 
             likeIcon.setOnClickListener(new View.OnClickListener() {
                 @Override

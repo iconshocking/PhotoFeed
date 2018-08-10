@@ -3,12 +3,14 @@ package com.a23andme.shock.photofeed;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.a23andme.shock.photofeed.Network.Response;
 
@@ -77,8 +79,19 @@ public class FeedActivity extends AppCompatActivity implements PhotoView, Shared
     }
 
     @Override
-    public void likeChangedForPhoto(Response.Photo photo, boolean newLikedValue) {
+    public void likeChangedForPhoto(Response.Photo photo, boolean newValue) {
 
+    }
+
+    @Override
+    public void displayPhotoDetailView(Response.Photo photo) {
+        PhotoDetailFragment fragment = new PhotoDetailFragment();
+        fragment.setPresenter(presenter);
+        fragment.setPhoto(photo);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.root, fragment);
+        transaction.addToBackStack("null");
+        transaction.commit();
     }
 
     @Override

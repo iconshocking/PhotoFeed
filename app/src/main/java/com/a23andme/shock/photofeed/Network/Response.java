@@ -59,6 +59,7 @@ public class Response {
     public static class Images {
         Image standard_resolution;
         Image thumbnail;
+        Image low_resolution;
 
         public Image getThumbnail() {
             return thumbnail;
@@ -66,6 +67,10 @@ public class Response {
 
         public Image getStandard_resolution() {
             return standard_resolution;
+        }
+
+        public Image getLow_resolution() {
+            return low_resolution;
         }
     }
 
