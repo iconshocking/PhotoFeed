@@ -77,7 +77,7 @@ public class FeedActivity extends AppCompatActivity implements PhotoView, Shared
     }
 
     @Override
-    public void likeClicked(Response.Photo photo) {
+    public void likeChangedForPhoto(Response.Photo photo, boolean newLikedValue) {
 
     }
 

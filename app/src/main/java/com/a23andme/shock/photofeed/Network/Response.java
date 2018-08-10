@@ -39,9 +39,19 @@ public class Response {
 
     public static class Likes {
         int count;
+        boolean haveLiked;
 
         public int getCount() {
             return count;
+        }
+
+        public boolean haveLiked() {
+            return haveLiked;
+        }
+
+        public boolean changeIfLikedOrNot() {
+            haveLiked = !haveLiked;
+            return haveLiked;
         }
     }
 

@@ -45,9 +45,14 @@ public class PhotosModel implements ApiResponseSubscriber {
         presenter.needNewAuthToken();
     }
 
-    public void likeOrUnlikePhoto(Response.Photo photo) {
-        apiRequester.postLike(photo.getMedia_id());
-//        apiRequester.removeLike(photo.getMedia_id());
+    public boolean likeOrUnlikePhoto(Response.Photo photo) {
+        boolean newLikedValue = photo.getLikes().changeIfLikedOrNot();
+        if (newLikedValue) {
+            apiRequester.postLike(photo.getMedia_id());
+        } else {
+            apiRequester.removeLike(photo.getMedia_id());
+        }
+        return newLikedValue;
     }
 
     private void setupApiService(String authToken) {

@@ -33,7 +33,7 @@ public class PhotoPresenter {
         photoView.displayPhotosData(photos);
     }
 
-    public void likeClicked(Response.Photo photo) {
-        photosModel.likeOrUnlikePhoto(photo);
+    public boolean likeClicked(Response.Photo photo) {
+        return photosModel.likeOrUnlikePhoto(photo);
     }
 }

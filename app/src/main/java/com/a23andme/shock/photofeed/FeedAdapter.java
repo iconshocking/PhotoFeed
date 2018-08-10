@@ -1,10 +1,17 @@
 package com.a23andme.shock.photofeed;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.transition.TransitionManager;
+import android.transition.TransitionSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -37,6 +44,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.PhotoViewHolde
         Response.Photo photo = photos.get(position);
         holder.photo = photo;
         holder.likeText.setText(Integer.toString(photo.getLikes().getCount()) + " " + LIKES);
+
+        int color = holder.likeIcon.getResources().getColor(
+                photo.getLikes().haveLiked() ? android.R.color.holo_red_light : android.R.color.darker_gray);
+        holder.likeIcon.getDrawable().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+
         Glide.with(holder.itemView)
                 .load(photo.getImages().getStandard_resolution().getUrl())
                 .transition(withCrossFade())
@@ -59,7 +71,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.PhotoViewHolde
         private TextView likeText;
         private Response.Photo photo;
 
-        public PhotoViewHolder(View itemView) {
+        public PhotoViewHolder(final View itemView) {
             super(itemView);
             thumbnail = itemView.findViewById(R.id.thumbnail);
             likeIcon = itemView.findViewById(R.id.like_icon);
@@ -69,7 +81,16 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.PhotoViewHolde
                 @Override
                 public void onClick(View v) {
                     if (photo != null) {
-                        presenter.likeClicked(photo);
+                        boolean newLikedValue = presenter.likeClicked(photo);
+                        if (newLikedValue) {
+                            likeIcon.getDrawable().setColorFilter(
+                                    v.getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
+                            Animation animation = AnimationUtils.loadAnimation(v.getContext(), R.anim.heart_bounce_anim);
+                            likeIcon.startAnimation(animation);
+                        } else {
+                            likeIcon.getDrawable().setColorFilter(
+                                    v.getResources().getColor(android.R.color.darker_gray), PorterDuff.Mode.SRC_ATOP);
+                        }
                     }
                 }
             });
