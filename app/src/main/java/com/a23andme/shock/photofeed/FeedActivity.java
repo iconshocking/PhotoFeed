@@ -91,6 +91,10 @@ public class FeedActivity extends AppCompatActivity implements PhotoView, Shared
         PhotoDetailFragment fragment = new PhotoDetailFragment();
         fragment.setPresenter(presenter);
         fragment.setPhoto(photo);
+
+        fragment.setEnterTransition(new Fade().setDuration(150));
+        fragment.setExitTransition(new Fade().setDuration(100));
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.root, fragment);
         transaction.addToBackStack("null");
