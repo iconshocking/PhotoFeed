@@ -1,6 +1,7 @@
 package com.a23andme.shock.photofeed;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
@@ -8,9 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Fade;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.a23andme.shock.photofeed.Network.Response;
 
@@ -45,6 +46,8 @@ public class FeedActivity extends AppCompatActivity implements PhotoView, Shared
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.feed_menu, menu);
+        menu.findItem(R.id.action_logout).getIcon().setColorFilter(
+                getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
         return true;
     }
 
