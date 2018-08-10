@@ -1,17 +1,13 @@
 package com.a23andme.shock.photofeed;
 
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.transition.TransitionManager;
-import android.transition.TransitionSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +15,8 @@ import com.a23andme.shock.photofeed.Network.Response;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
@@ -62,6 +60,13 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.PhotoViewHolde
 
     public void addFeedItems(List<Response.Photo> newPhotos) {
         photos.addAll(newPhotos);
+        Collections.sort(photos, new Comparator<Response.Photo>() {
+            @Override
+            public int compare(Response.Photo photo1, Response.Photo photo2) {
+                long diff = photo1.getCreatedTime() - photo2.getCreatedTime();
+                return diff < 0 ? -1 : (diff > 1 ? 1 : 0);
+            }
+        });
         notifyDataSetChanged();
     }
 

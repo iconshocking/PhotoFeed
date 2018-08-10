@@ -17,7 +17,7 @@ public class Response {
         Likes likes;
         String media_id;
         Images images;
-        long createdTime;
+        long created_time;
 
         public Likes getLikes() {
             return likes;
@@ -32,7 +32,7 @@ public class Response {
         }
 
         public long getCreatedTime() {
-            return createdTime;
+            return created_time;
         }
     }
 
