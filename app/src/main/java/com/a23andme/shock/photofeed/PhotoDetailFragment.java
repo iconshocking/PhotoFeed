@@ -41,9 +41,13 @@ public class PhotoDetailFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup mRootView = (ViewGroup) inflater.inflate(R.layout.photo_detail, container, false);
 
+        int screenWidth = mRootView.getContext().getResources().getDisplayMetrics().widthPixels;
+        Response.Image image = photo.getImages().getStandard_resolution();
         ImageView photoView = mRootView.findViewById(R.id.photo);
+
+        photoView.getLayoutParams().height = (int) (((double) screenWidth / image.getWidth()) * image.getHeight());
         Glide.with(photoView.getContext())
-                .load(photo.getImages().getStandard_resolution().getUrl())
+                .load(image.getUrl())
                 .transition(withCrossFade())
                 .into(photoView);
 

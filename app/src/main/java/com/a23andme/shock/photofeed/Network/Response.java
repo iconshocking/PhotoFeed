@@ -82,6 +82,14 @@ public class Response {
         public String getUrl() {
             return url;
         }
+
+        public int getHeight() {
+            return height;
+        }
+
+        public int getWidth() {
+            return width;
+        }
     }
 
 

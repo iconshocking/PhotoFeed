@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.a23andme.shock.photofeed.FeedActivity.FEED_COLUMN_COUNT;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.PhotoViewHolder> {
@@ -47,10 +48,14 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.PhotoViewHolde
                 photo.getLikes().haveLiked() ? android.R.color.holo_red_light : android.R.color.darker_gray);
         holder.likeIcon.getDrawable().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
 
+        int imageWidth = (holder.image.getContext().getResources().getDisplayMetrics().widthPixels / FEED_COLUMN_COUNT)
+                - (int) (4 * holder.image.getResources().getDisplayMetrics().density);
+        Response.Image image = photo.getImages().getLow_resolution();
+        holder.image.getLayoutParams().height = (int) (((float) imageWidth / image.getWidth()) * image.getHeight());
         Glide.with(holder.itemView)
-                .load(photo.getImages().getLow_resolution().getUrl())
+                .load(image.getUrl())
                 .transition(withCrossFade())
-                .into(holder.thumbnail);
+                .into(holder.image);
     }
 
     @Override
@@ -71,18 +76,18 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.PhotoViewHolde
     }
 
     public class PhotoViewHolder extends RecyclerView.ViewHolder {
-        private ImageView thumbnail;
+        private ImageView image;
         private ImageView likeIcon;
         private TextView likeText;
         private Response.Photo photo;
 
         public PhotoViewHolder(final View itemView) {
             super(itemView);
-            thumbnail = itemView.findViewById(R.id.photo);
+            image = itemView.findViewById(R.id.photo);
             likeIcon = itemView.findViewById(R.id.like_icon);
             likeText = itemView.findViewById(R.id.like_text);
 
-            thumbnail.setOnClickListener(new View.OnClickListener() {
+            image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     presenter.photoClicked(photo);
