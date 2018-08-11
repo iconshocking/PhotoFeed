@@ -55,7 +55,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.PhotoViewHolde
         int imageWidth = (holder.image.getContext().getResources().getDisplayMetrics().widthPixels / FEED_COLUMN_COUNT)
                 - (int) (4 * holder.image.getResources().getDisplayMetrics().density);
         Response.Image image = photo.getImages().getLow_resolution();
-        holder.image.getLayoutParams().height = (int) (((float) imageWidth / image.getWidth()) * image.getHeight());
+        holder.image.getLayoutParams().height = imageWidth;
         Glide.with(holder.itemView)
                 .load(image.getUrl())
                 .transition(withCrossFade())
