@@ -13,12 +13,12 @@
 
     <ImageView
         android:id="@+id/like_icon"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_below="@+id/photo"
         android:layout_alignParentLeft="true"
-        android:padding="4dp"
-        android:src="@drawable/heart"/>
+        android:layout_margin="12dp"
+        android:src="@drawable/big_heart"/>
 
     <TextView
         android:id="@+id/like_text"
@@ -30,10 +30,10 @@
         android:layout_alignBottom="@+id/like_icon"
         android:layout_alignTop="@+id/like_icon"
         android:drawablePadding="16dp"
-        android:textStyle="bold"
-        android:padding="4dp"
-        android:paddingLeft="8dp"
-        android:textSize="24sp"/>
+        android:paddingLeft="4dp"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"/>
 
     <TextView
         android:id="@+id/post_time_text"
@@ -44,10 +44,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignBottom="@id/like_text"
         android:layout_alignTop="@+id/like_text"
-        android:drawablePadding="16dp"
-        android:textStyle="bold"
-        android:padding="4dp"
-        android:paddingLeft="8dp"
-        android:textSize="24sp"/>
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:paddingRight="16dp"
+        android:paddingLeft="8dp"/>
 
 </RelativeLayout>
