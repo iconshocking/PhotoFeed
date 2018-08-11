@@ -1,7 +1,6 @@
 package com.a23andme.shock.photofeed.view;
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
@@ -49,8 +48,6 @@ public class FeedActivity extends AppCompatActivity implements PhotoView, Shared
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.feed_menu, menu);
-        menu.findItem(R.id.action_logout).getIcon().setColorFilter(
-                getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
         return true;
     }
 
