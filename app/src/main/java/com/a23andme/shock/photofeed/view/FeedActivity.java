@@ -12,10 +12,11 @@ import android.transition.Fade;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.a23andme.shock.photofeed.presenter.PhotoPresenter;
 import com.a23andme.shock.photofeed.R;
 import com.a23andme.shock.photofeed.model.SharedPreferencesWrapper;
+import com.a23andme.shock.photofeed.model.network.ApiService;
 import com.a23andme.shock.photofeed.model.network.Response;
+import com.a23andme.shock.photofeed.presenter.PhotoPresenter;
 
 import java.util.List;
 
@@ -28,18 +29,17 @@ public class FeedActivity extends AppCompatActivity implements PhotoView, Shared
 
     private PhotoPresenter presenter;
     private FeedAdapter adapter;
-    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
-        recyclerView = findViewById(R.id.photos_feed);
+        RecyclerView recyclerView = findViewById(R.id.photos_feed);
         recyclerView.setLayoutManager(new GridLayoutManager(
                 this, FEED_COLUMN_COUNT, LinearLayoutManager.VERTICAL, false));
 
-        presenter = new PhotoPresenter(this, this);
+        presenter = new PhotoPresenter(this, this, ApiService.getInstance());
 
         adapter = new FeedAdapter(recyclerView, presenter);
         recyclerView.setAdapter(adapter);

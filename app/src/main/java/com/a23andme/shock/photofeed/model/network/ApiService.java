@@ -2,6 +2,9 @@ package com.a23andme.shock.photofeed.model.network;
 
 import android.support.annotation.NonNull;
 
+import com.a23andme.shock.photofeed.model.network.Response.Data;
+import com.a23andme.shock.photofeed.model.network.Response.StatusResponse;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -16,26 +19,24 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static com.a23andme.shock.photofeed.model.network.NetworkApi.API_BASE_URL;
 import static com.a23andme.shock.photofeed.model.network.NetworkApi.RESPONSE_CODE_UNAUTHORIZED;
 
-import com.a23andme.shock.photofeed.model.network.Response.*;
-
 // followed oauth tutorial from https://futurestud.io/tutorials/oauth-2-on-android-with-retrofit
 
-public class NetworkService implements ApiRequester {
+public class ApiService implements ApiRequester {
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-    private static NetworkService networkService = new NetworkService();
+    private static ApiService networkApiService = new ApiService();
 
     private static NetworkApi networkApi;
 
     private ApiResponseSubscriber subscriber;
 
-    private NetworkService() {}
+    private ApiService() {}
 
-    public static NetworkService getInstance() {
-        return networkService;
+    public static ApiService getInstance() {
+        return networkApiService;
     }
 
-    public static NetworkService createApiService(Class<NetworkApi> serviceClass, final String authToken) {
+    public void setupApiService(Class<NetworkApi> apiClass, final String authToken) {
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create());
@@ -63,9 +64,7 @@ public class NetworkService implements ApiRequester {
             builder.client(httpClient.build());
         }
 
-        networkApi = builder.build().create(serviceClass);
-
-        return getInstance();
+        networkApi = builder.build().create(apiClass);
     }
 
     private NetworkApi getApi() {

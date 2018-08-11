@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.a23andme.shock.photofeed.model.PhotosModel;
 import com.a23andme.shock.photofeed.model.SharedPreferencesWrapper;
+import com.a23andme.shock.photofeed.model.network.ApiRequester;
 import com.a23andme.shock.photofeed.model.network.Response;
 import com.a23andme.shock.photofeed.view.PhotoView;
 
@@ -13,9 +14,10 @@ public class PhotoPresenter {
     private PhotoView photoView;
     private PhotosModel photosModel;
 
-    public PhotoPresenter(@NonNull PhotoView photoView, @NonNull SharedPreferencesWrapper preferencesWrapper) {
+    public PhotoPresenter(@NonNull PhotoView photoView, @NonNull SharedPreferencesWrapper preferencesWrapper,
+                          @NonNull ApiRequester apiRequester) {
         this.photoView = photoView;
-        photosModel = new PhotosModel(this, preferencesWrapper);
+        photosModel = new PhotosModel(this, preferencesWrapper, apiRequester);
     }
 
     public void newAuthTokenReceived(String authToken) {

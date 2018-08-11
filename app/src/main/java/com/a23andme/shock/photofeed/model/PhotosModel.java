@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import com.a23andme.shock.photofeed.model.network.ApiRequester;
 import com.a23andme.shock.photofeed.model.network.ApiResponseSubscriber;
 import com.a23andme.shock.photofeed.model.network.NetworkApi;
-import com.a23andme.shock.photofeed.model.network.NetworkService;
 import com.a23andme.shock.photofeed.model.network.Response;
 import com.a23andme.shock.photofeed.presenter.PhotoPresenter;
 
@@ -20,9 +19,12 @@ public class PhotosModel implements ApiResponseSubscriber {
 
     private List<Response.Photo> photos;
 
-    public PhotosModel(@NonNull PhotoPresenter presenter, @NonNull SharedPreferencesWrapper preferencesWrapper) {
+    public PhotosModel(@NonNull PhotoPresenter presenter, @NonNull SharedPreferencesWrapper preferencesWrapper,
+                       @NonNull ApiRequester apiRequester) {
         this.presenter = presenter;
         this.preferencesWrapper = preferencesWrapper;
+        this.apiRequester = apiRequester;
+
         String cachedAuthToken = preferencesWrapper.getStringValueForKey(AUTH_TOKEN_EXTRA);
         if (cachedAuthToken != null && cachedAuthToken.length() > 0) {
             setupApiService(cachedAuthToken);
@@ -57,7 +59,7 @@ public class PhotosModel implements ApiResponseSubscriber {
     }
 
     private void setupApiService(String authToken) {
-        apiRequester = NetworkService.createApiService(NetworkApi.class, authToken);
+        apiRequester.setupApiService(NetworkApi.class, authToken);
         apiRequester.setSubscriber(this);
         if (photos == null) {
             requestPhotoData();
