@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Photo Feed</string>
+    <string name="likes_count">%d likes</string>
 </resources>

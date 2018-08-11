@@ -25,15 +25,17 @@ import static com.a23andme.shock.photofeed.view.FeedActivity.FEED_COLUMN_COUNT;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.PhotoViewHolder> {
-    public static final String LIKES = "likes";
+    private int IMAGE_SIDE_LENGTH;
 
-    RecyclerView recyclerView;
-    PhotoPresenter presenter;
-    List<Response.Photo> photos = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private PhotoPresenter presenter;
+    private List<Response.Photo> photos = new ArrayList<>();
 
     public FeedAdapter(@NonNull RecyclerView recyclerView, @NonNull PhotoPresenter photoPresenter) {
         this.recyclerView = recyclerView;
         presenter = photoPresenter;
+        IMAGE_SIDE_LENGTH = (recyclerView.getResources().getDisplayMetrics().widthPixels / FEED_COLUMN_COUNT)
+                - (int) (2 * recyclerView.getResources().getDimension(R.dimen.feed_item_card_margin));
     }
 
     @NonNull
@@ -46,16 +48,16 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.PhotoViewHolde
     public void onBindViewHolder(@NonNull PhotoViewHolder holder, int position) {
         Response.Photo photo = photos.get(position);
         holder.photo = photo;
-        holder.likeText.setText(Integer.toString(photo.getLikes().getCount()) + " " + LIKES);
+
+        holder.likeText.setText(
+                holder.likeText.getResources().getString(R.string.likes_count, photo.getLikes().getCount()));
 
         int color = holder.likeIcon.getResources().getColor(
-                photo.getLikes().haveLiked() ? android.R.color.holo_red_light : android.R.color.darker_gray);
+                photo.getLikes().haveLiked() ? R.color.heart_red : R.color.heart_gray);
         holder.likeIcon.getDrawable().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
 
-        int imageWidth = (holder.image.getContext().getResources().getDisplayMetrics().widthPixels / FEED_COLUMN_COUNT)
-                - (int) (4 * holder.image.getResources().getDisplayMetrics().density);
+        holder.image.getLayoutParams().height = IMAGE_SIDE_LENGTH;
         Response.Image image = photo.getImages().getLow_resolution();
-        holder.image.getLayoutParams().height = imageWidth;
         Glide.with(holder.itemView)
                 .load(image.getUrl())
                 .transition(withCrossFade())
@@ -87,15 +89,16 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.PhotoViewHolde
 
             if (newLikedValue) {
                 viewHolder.likeIcon.getDrawable().setColorFilter(
-                        view.getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
+                        view.getResources().getColor(R.color.heart_red), PorterDuff.Mode.SRC_ATOP);
                 Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.heart_bounce_anim);
                 viewHolder.likeIcon.startAnimation(animation);
             } else {
                 viewHolder.likeIcon.getDrawable().setColorFilter(
-                        view.getResources().getColor(android.R.color.darker_gray), PorterDuff.Mode.SRC_ATOP);
+                        view.getResources().getColor(R.color.heart_gray), PorterDuff.Mode.SRC_ATOP);
             }
 
-            viewHolder.likeText.setText(Integer.toString(photo.getLikes().getCount()) + " " + LIKES);
+            viewHolder.likeText.setText(
+                    viewHolder.likeText.getResources().getString(R.string.likes_count, photo.getLikes().getCount()));
         }
     }
 

@@ -18,7 +18,6 @@ import com.a23andme.shock.photofeed.R;
 import com.a23andme.shock.photofeed.model.network.Response;
 import com.bumptech.glide.Glide;
 
-import static com.a23andme.shock.photofeed.view.FeedAdapter.LIKES;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class PhotoDetailFragment extends Fragment {
@@ -43,25 +42,25 @@ public class PhotoDetailFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup mRootView = (ViewGroup) inflater.inflate(R.layout.photo_detail, container, false);
 
-        int screenWidth = mRootView.getContext().getResources().getDisplayMetrics().widthPixels;
-        Response.Image image = photo.getImages().getStandard_resolution();
+        int imageSideLength = mRootView.getContext().getResources().getDisplayMetrics().widthPixels;
         ImageView photoView = mRootView.findViewById(R.id.photo);
+        photoView.getLayoutParams().height = imageSideLength;
 
-        photoView.getLayoutParams().height = screenWidth;
+        Response.Image image = photo.getImages().getStandard_resolution();
         Glide.with(photoView.getContext())
                 .load(image.getUrl())
                 .transition(withCrossFade())
                 .into(photoView);
 
         final TextView likesTextView = mRootView.findViewById(R.id.like_text);
-        likesTextView.setText(Integer.toString(photo.getLikes().getCount()) + " " + LIKES);
+        likesTextView.setText(likesTextView.getResources().getString(R.string.likes_count, photo.getLikes().getCount()));
 
         TextView timeTextView = mRootView.findViewById(R.id.post_time_text);
         timeTextView.setText(convertPostedTimestampToText(photo.getCreatedTime()));
 
         final ImageView likeIconView = mRootView.findViewById(R.id.like_icon);
         int color = likeIconView.getResources().getColor(
-                photo.getLikes().haveLiked() ? android.R.color.holo_red_light : android.R.color.darker_gray);
+                photo.getLikes().haveLiked() ? R.color.heart_red : R.color.heart_gray);
         likeIconView.getDrawable().mutate().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         likeIconView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,15 +69,16 @@ public class PhotoDetailFragment extends Fragment {
                     boolean newLikedValue = presenter.likeClicked(photo);
                     if (newLikedValue) {
                         likeIconView.getDrawable().setColorFilter(
-                                v.getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
+                                v.getResources().getColor(R.color.heart_red), PorterDuff.Mode.SRC_ATOP);
                         Animation animation = AnimationUtils.loadAnimation(v.getContext(), R.anim.heart_bounce_anim);
                         likeIconView.startAnimation(animation);
                     } else {
                         likeIconView.getDrawable().setColorFilter(
-                                v.getResources().getColor(android.R.color.darker_gray), PorterDuff.Mode.SRC_ATOP);
+                                v.getResources().getColor(R.color.heart_gray), PorterDuff.Mode.SRC_ATOP);
                     }
 
-                    likesTextView.setText(Integer.toString(photo.getLikes().getCount()) + " " + LIKES);
+                    likesTextView.setText(
+                            likesTextView.getResources().getString(R.string.likes_count, photo.getLikes().getCount()));
                 }
             }
         });
