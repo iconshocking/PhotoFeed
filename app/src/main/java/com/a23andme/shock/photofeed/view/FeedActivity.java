@@ -97,7 +97,7 @@ public class FeedActivity extends AppCompatActivity implements PhotoView, Shared
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.root, fragment);
-        transaction.addToBackStack("null");
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 
