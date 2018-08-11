@@ -1,4 +1,4 @@
-package com.a23andme.shock.photofeed;
+package com.a23andme.shock.photofeed.model;
 
 public interface SharedPreferencesWrapper {
     String getStringValueForKey(String key);

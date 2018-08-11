@@ -1,16 +1,17 @@
-package com.a23andme.shock.photofeed;
+package com.a23andme.shock.photofeed.model;
 
 import android.support.annotation.NonNull;
 
-import com.a23andme.shock.photofeed.Network.ApiRequester;
-import com.a23andme.shock.photofeed.Network.ApiResponseSubscriber;
-import com.a23andme.shock.photofeed.Network.NetworkApi;
-import com.a23andme.shock.photofeed.Network.NetworkService;
-import com.a23andme.shock.photofeed.Network.Response;
+import com.a23andme.shock.photofeed.model.network.ApiRequester;
+import com.a23andme.shock.photofeed.model.network.ApiResponseSubscriber;
+import com.a23andme.shock.photofeed.model.network.NetworkApi;
+import com.a23andme.shock.photofeed.model.network.NetworkService;
+import com.a23andme.shock.photofeed.model.network.Response;
+import com.a23andme.shock.photofeed.presenter.PhotoPresenter;
 
 import java.util.List;
 
-import static com.a23andme.shock.photofeed.FeedActivity.AUTH_TOKEN_EXTRA;
+import static com.a23andme.shock.photofeed.view.FeedActivity.AUTH_TOKEN_EXTRA;
 
 public class PhotosModel implements ApiResponseSubscriber {
     private PhotoPresenter presenter;

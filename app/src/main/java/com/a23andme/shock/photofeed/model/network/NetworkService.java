@@ -1,4 +1,4 @@
-package com.a23andme.shock.photofeed.Network;
+package com.a23andme.shock.photofeed.model.network;
 
 import android.support.annotation.NonNull;
 
@@ -13,10 +13,10 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.a23andme.shock.photofeed.Network.NetworkApi.API_BASE_URL;
-import static com.a23andme.shock.photofeed.Network.NetworkApi.RESPONSE_CODE_UNAUTHORIZED;
+import static com.a23andme.shock.photofeed.model.network.NetworkApi.API_BASE_URL;
+import static com.a23andme.shock.photofeed.model.network.NetworkApi.RESPONSE_CODE_UNAUTHORIZED;
 
-import com.a23andme.shock.photofeed.Network.Response.*;
+import com.a23andme.shock.photofeed.model.network.Response.*;
 
 // followed oauth tutorial from https://futurestud.io/tutorials/oauth-2-on-android-with-retrofit
 

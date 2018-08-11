@@ -1,22 +1,23 @@
-package com.a23andme.shock.photofeed;
+package com.a23andme.shock.photofeed.view;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import static com.a23andme.shock.photofeed.FeedActivity.AUTH_TOKEN_EXTRA;
-import static com.a23andme.shock.photofeed.Network.NetworkApi.AMPERSAND;
-import static com.a23andme.shock.photofeed.Network.NetworkApi.EQUALS;
-import static com.a23andme.shock.photofeed.Network.NetworkApi.ID_TOKEN_PREFIX;
-import static com.a23andme.shock.photofeed.Network.NetworkApi.LOGIN_AND_LOGOUT_REDIRECT_URI;
-import static com.a23andme.shock.photofeed.Network.NetworkApi.LOGIN_URL;
-import static com.a23andme.shock.photofeed.Network.NetworkApi.LOGOUT_URL;
+import com.a23andme.shock.photofeed.R;
+
+import static com.a23andme.shock.photofeed.view.FeedActivity.AUTH_TOKEN_EXTRA;
+import static com.a23andme.shock.photofeed.model.network.NetworkApi.AMPERSAND;
+import static com.a23andme.shock.photofeed.model.network.NetworkApi.EQUALS;
+import static com.a23andme.shock.photofeed.model.network.NetworkApi.ID_TOKEN_PREFIX;
+import static com.a23andme.shock.photofeed.model.network.NetworkApi.LOGIN_AND_LOGOUT_REDIRECT_URI;
+import static com.a23andme.shock.photofeed.model.network.NetworkApi.LOGIN_URL;
+import static com.a23andme.shock.photofeed.model.network.NetworkApi.LOGOUT_URL;
 
 public class LoginLogoutActivity extends AppCompatActivity {
     public static final String IS_LOGOUT_EXTRA = "is_logout";

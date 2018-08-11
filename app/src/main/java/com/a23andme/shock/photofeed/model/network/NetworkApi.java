@@ -1,4 +1,4 @@
-package com.a23andme.shock.photofeed.Network;
+package com.a23andme.shock.photofeed.model.network;
 
 import retrofit2.Call;
 import retrofit2.http.DELETE;

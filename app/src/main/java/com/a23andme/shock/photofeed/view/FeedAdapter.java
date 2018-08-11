@@ -1,4 +1,4 @@
-package com.a23andme.shock.photofeed;
+package com.a23andme.shock.photofeed.view;
 
 import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
@@ -11,7 +11,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.a23andme.shock.photofeed.Network.Response;
+import com.a23andme.shock.photofeed.presenter.PhotoPresenter;
+import com.a23andme.shock.photofeed.R;
+import com.a23andme.shock.photofeed.model.network.Response;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.a23andme.shock.photofeed.FeedActivity.FEED_COLUMN_COUNT;
+import static com.a23andme.shock.photofeed.view.FeedActivity.FEED_COLUMN_COUNT;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.PhotoViewHolder> {

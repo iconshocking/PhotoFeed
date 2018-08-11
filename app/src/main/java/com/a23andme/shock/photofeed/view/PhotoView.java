@@ -1,6 +1,6 @@
-package com.a23andme.shock.photofeed;
+package com.a23andme.shock.photofeed.view;
 
-import com.a23andme.shock.photofeed.Network.Response;
+import com.a23andme.shock.photofeed.model.network.Response;
 
 import java.util.List;
 

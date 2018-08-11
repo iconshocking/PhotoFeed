@@ -1,4 +1,4 @@
-package com.a23andme.shock.photofeed;
+package com.a23andme.shock.photofeed.view;
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -13,10 +13,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.a23andme.shock.photofeed.Network.Response;
+import com.a23andme.shock.photofeed.presenter.PhotoPresenter;
+import com.a23andme.shock.photofeed.R;
+import com.a23andme.shock.photofeed.model.network.Response;
 import com.bumptech.glide.Glide;
 
-import static com.a23andme.shock.photofeed.FeedAdapter.LIKES;
+import static com.a23andme.shock.photofeed.view.FeedAdapter.LIKES;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 public class PhotoDetailFragment extends Fragment {

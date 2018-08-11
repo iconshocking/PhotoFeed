@@ -1,8 +1,11 @@
-package com.a23andme.shock.photofeed;
+package com.a23andme.shock.photofeed.presenter;
 
 import android.support.annotation.NonNull;
 
-import com.a23andme.shock.photofeed.Network.Response;
+import com.a23andme.shock.photofeed.model.PhotosModel;
+import com.a23andme.shock.photofeed.model.SharedPreferencesWrapper;
+import com.a23andme.shock.photofeed.model.network.Response;
+import com.a23andme.shock.photofeed.view.PhotoView;
 
 import java.util.List;
 

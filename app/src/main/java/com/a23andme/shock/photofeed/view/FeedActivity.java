@@ -1,4 +1,4 @@
-package com.a23andme.shock.photofeed;
+package com.a23andme.shock.photofeed.view;
 
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -13,11 +13,14 @@ import android.transition.Fade;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.a23andme.shock.photofeed.Network.Response;
+import com.a23andme.shock.photofeed.presenter.PhotoPresenter;
+import com.a23andme.shock.photofeed.R;
+import com.a23andme.shock.photofeed.model.SharedPreferencesWrapper;
+import com.a23andme.shock.photofeed.model.network.Response;
 
 import java.util.List;
 
-import static com.a23andme.shock.photofeed.LoginLogoutActivity.IS_LOGOUT_EXTRA;
+import static com.a23andme.shock.photofeed.view.LoginLogoutActivity.IS_LOGOUT_EXTRA;
 
 public class FeedActivity extends AppCompatActivity implements PhotoView, SharedPreferencesWrapper {
     public static final int LOGIN_INTENT_REQUEST_CODE = 101;
