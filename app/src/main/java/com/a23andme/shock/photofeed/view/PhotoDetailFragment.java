@@ -62,7 +62,7 @@ public class PhotoDetailFragment extends Fragment {
         final ImageView likeIconView = mRootView.findViewById(R.id.like_icon);
         int color = likeIconView.getResources().getColor(
                 photo.getLikes().haveLiked() ? android.R.color.holo_red_light : android.R.color.darker_gray);
-        likeIconView.getDrawable().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+        likeIconView.getDrawable().mutate().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         likeIconView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

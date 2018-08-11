@@ -119,6 +119,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.PhotoViewHolde
                 }
             });
 
+            likeIcon.getDrawable().mutate();
             likeIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
