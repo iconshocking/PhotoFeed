@@ -2,6 +2,7 @@ package com.a23andme.shock.photofeed.model;
 
 import android.support.annotation.NonNull;
 
+import com.a23andme.shock.photofeed.App;
 import com.a23andme.shock.photofeed.model.network.ApiRequester;
 import com.a23andme.shock.photofeed.model.network.ApiResponseSubscriber;
 import com.a23andme.shock.photofeed.model.network.NetworkApi;
@@ -10,22 +11,26 @@ import com.a23andme.shock.photofeed.presenter.PhotoPresenter;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import static com.a23andme.shock.photofeed.view.FeedActivity.AUTH_TOKEN_EXTRA;
 
 public class PhotosModel implements ApiResponseSubscriber {
     private PhotoPresenter presenter;
     private ApiRequester apiRequester;
-    private SharedPreferencesWrapper preferencesWrapper;
+
+    @Inject
+    protected LocalStorage localStorage;
 
     private List<Response.Photo> photos;
 
-    public PhotosModel(@NonNull PhotoPresenter presenter, @NonNull SharedPreferencesWrapper preferencesWrapper,
-                       @NonNull ApiRequester apiRequester) {
+    public PhotosModel(@NonNull PhotoPresenter presenter, @NonNull ApiRequester apiRequester) {
         this.presenter = presenter;
-        this.preferencesWrapper = preferencesWrapper;
         this.apiRequester = apiRequester;
 
-        String cachedAuthToken = preferencesWrapper.getStringValueForKey(AUTH_TOKEN_EXTRA);
+        App.getApp().getNetComponent().inject(this);
+
+        String cachedAuthToken = localStorage.getStringValueForKey(AUTH_TOKEN_EXTRA);
         if (cachedAuthToken != null && cachedAuthToken.length() > 0) {
             setupApiService(cachedAuthToken);
         } else {
@@ -67,11 +72,11 @@ public class PhotosModel implements ApiResponseSubscriber {
     }
 
     public void newAuthTokenReceived(String authToken) {
-        preferencesWrapper.setStringValueForKey(AUTH_TOKEN_EXTRA, authToken);
+        localStorage.setStringValueForKey(AUTH_TOKEN_EXTRA, authToken);
         setupApiService(authToken);
     }
 
     public void clearAuthToken() {
-        preferencesWrapper.setStringValueForKey(AUTH_TOKEN_EXTRA, null);
+        localStorage.setStringValueForKey(AUTH_TOKEN_EXTRA, null);
     }
 }

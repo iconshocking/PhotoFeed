@@ -13,9 +13,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.a23andme.shock.photofeed.presenter.PhotoPresenter;
 import com.a23andme.shock.photofeed.R;
 import com.a23andme.shock.photofeed.model.network.Response;
+import com.a23andme.shock.photofeed.presenter.PhotoPresenter;
 import com.bumptech.glide.Glide;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;

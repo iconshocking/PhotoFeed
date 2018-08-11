@@ -2,7 +2,6 @@ package com.a23andme.shock.photofeed.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.a23andme.shock.photofeed.R;
-import com.a23andme.shock.photofeed.model.SharedPreferencesWrapper;
 import com.a23andme.shock.photofeed.model.network.ApiService;
 import com.a23andme.shock.photofeed.model.network.Response;
 import com.a23andme.shock.photofeed.presenter.PhotoPresenter;
@@ -22,7 +20,7 @@ import java.util.List;
 
 import static com.a23andme.shock.photofeed.view.LoginLogoutActivity.IS_LOGOUT_EXTRA;
 
-public class FeedActivity extends AppCompatActivity implements PhotoView, SharedPreferencesWrapper {
+public class FeedActivity extends AppCompatActivity implements PhotoView {
     public static final int LOGIN_INTENT_REQUEST_CODE = 101;
     public static final String AUTH_TOKEN_EXTRA = "authToken";
     public static final int FEED_COLUMN_COUNT = 2;
@@ -33,13 +31,14 @@ public class FeedActivity extends AppCompatActivity implements PhotoView, Shared
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_feed);
 
         RecyclerView recyclerView = findViewById(R.id.photos_feed);
         recyclerView.setLayoutManager(new GridLayoutManager(
                 this, FEED_COLUMN_COUNT, LinearLayoutManager.VERTICAL, false));
 
-        presenter = new PhotoPresenter(this, this, ApiService.getInstance());
+        presenter = new PhotoPresenter(this, ApiService.getInstance());
 
         adapter = new FeedAdapter(recyclerView, presenter);
         recyclerView.setAdapter(adapter);
@@ -104,15 +103,5 @@ public class FeedActivity extends AppCompatActivity implements PhotoView, Shared
     @Override
     public void displayPhotosData(List<Response.Photo> photos) {
         adapter.addFeedItems(photos);
-    }
-
-    @Override
-    public String getStringValueForKey(String key) {
-        return PreferenceManager.getDefaultSharedPreferences(this).getString(key, null);
-    }
-
-    @Override
-    public void setStringValueForKey(String key, String value) {
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putString(key, value).apply();
     }
 }

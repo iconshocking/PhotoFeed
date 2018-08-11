@@ -2,10 +2,13 @@ package com.a23andme.shock.photofeed.model.network;
 
 import android.support.annotation.NonNull;
 
+import com.a23andme.shock.photofeed.App;
 import com.a23andme.shock.photofeed.model.network.Response.Data;
 import com.a23andme.shock.photofeed.model.network.Response.StatusResponse;
 
 import java.io.IOException;
+
+import javax.inject.Inject;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -14,33 +17,33 @@ import okhttp3.Response;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.a23andme.shock.photofeed.model.network.NetworkApi.API_BASE_URL;
 import static com.a23andme.shock.photofeed.model.network.NetworkApi.RESPONSE_CODE_UNAUTHORIZED;
 
 // followed oauth tutorial from https://futurestud.io/tutorials/oauth-2-on-android-with-retrofit
 
 public class ApiService implements ApiRequester {
-    private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-
     private static ApiService networkApiService = new ApiService();
 
-    private static NetworkApi networkApi;
+    private NetworkApi networkApi;
 
     private ApiResponseSubscriber subscriber;
 
-    private ApiService() {}
+    @Inject
+    protected OkHttpClient.Builder httpClient;
+
+    @Inject
+    protected Retrofit.Builder retrofitBuilder;
+
+    private ApiService() {
+        App.getApp().getNetComponent().inject(this);
+    }
 
     public static ApiService getInstance() {
         return networkApiService;
     }
 
     public void setupApiService(Class<NetworkApi> apiClass, final String authToken) {
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl(API_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create());
-
         if (authToken != null && authToken.length() != 0) {
             Interceptor interceptor = new Interceptor() {
                 private String mAuthToken = authToken;
@@ -61,10 +64,10 @@ public class ApiService implements ApiRequester {
                 httpClient.addInterceptor(interceptor);
             }
 
-            builder.client(httpClient.build());
+            retrofitBuilder.client(httpClient.build());
         }
 
-        networkApi = builder.build().create(apiClass);
+        networkApi = retrofitBuilder.build().create(apiClass);
     }
 
     private NetworkApi getApi() {
