@@ -51,7 +51,7 @@ public class PhotoDetailFragment extends Fragment {
                 .transition(withCrossFade())
                 .into(photoView);
 
-        TextView likesTextView = mRootView.findViewById(R.id.like_text);
+        final TextView likesTextView = mRootView.findViewById(R.id.like_text);
         likesTextView.setText(Integer.toString(photo.getLikes().getCount()) + " " + LIKES);
 
         TextView timeTextView = mRootView.findViewById(R.id.post_time_text);
@@ -75,6 +75,8 @@ public class PhotoDetailFragment extends Fragment {
                         likeIconView.getDrawable().setColorFilter(
                                 v.getResources().getColor(android.R.color.darker_gray), PorterDuff.Mode.SRC_ATOP);
                     }
+
+                    likesTextView.setText(Integer.toString(photo.getLikes().getCount()) + " " + LIKES);
                 }
             }
         });

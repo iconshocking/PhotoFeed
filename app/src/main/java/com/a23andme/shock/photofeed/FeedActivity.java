@@ -39,7 +39,7 @@ public class FeedActivity extends AppCompatActivity implements PhotoView, Shared
 
         presenter = new PhotoPresenter(this, this);
 
-        adapter = new FeedAdapter(presenter);
+        adapter = new FeedAdapter(recyclerView, presenter);
         recyclerView.setAdapter(adapter);
     }
 
@@ -83,7 +83,7 @@ public class FeedActivity extends AppCompatActivity implements PhotoView, Shared
 
     @Override
     public void likeChangedForPhoto(Response.Photo photo, boolean newValue) {
-
+        adapter.animateLikeForPhoto(photo, newValue);
     }
 
     @Override

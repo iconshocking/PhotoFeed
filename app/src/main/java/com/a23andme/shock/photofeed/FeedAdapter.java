@@ -25,10 +25,12 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.PhotoViewHolder> {
     public static final String LIKES = "likes";
 
+    RecyclerView recyclerView;
     PhotoPresenter presenter;
     List<Response.Photo> photos = new ArrayList<>();
 
-    public FeedAdapter(@NonNull PhotoPresenter photoPresenter) {
+    public FeedAdapter(@NonNull RecyclerView recyclerView, @NonNull PhotoPresenter photoPresenter) {
+        this.recyclerView = recyclerView;
         presenter = photoPresenter;
     }
 
@@ -75,6 +77,26 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.PhotoViewHolde
         notifyDataSetChanged();
     }
 
+    public void animateLikeForPhoto(Response.Photo photo, boolean newLikedValue) {
+        int position = photos.indexOf(photo);
+        View view = recyclerView.getLayoutManager().findViewByPosition(position);
+        if (view != null && view.getTag() instanceof PhotoViewHolder) {
+            PhotoViewHolder viewHolder = (PhotoViewHolder) view.getTag();
+
+            if (newLikedValue) {
+                viewHolder.likeIcon.getDrawable().setColorFilter(
+                        view.getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
+                Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.heart_bounce_anim);
+                viewHolder.likeIcon.startAnimation(animation);
+            } else {
+                viewHolder.likeIcon.getDrawable().setColorFilter(
+                        view.getResources().getColor(android.R.color.darker_gray), PorterDuff.Mode.SRC_ATOP);
+            }
+
+            viewHolder.likeText.setText(Integer.toString(photo.getLikes().getCount()) + " " + LIKES);
+        }
+    }
+
     public class PhotoViewHolder extends RecyclerView.ViewHolder {
         private ImageView image;
         private ImageView likeIcon;
@@ -83,6 +105,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.PhotoViewHolde
 
         public PhotoViewHolder(final View itemView) {
             super(itemView);
+            itemView.setTag(this);
             image = itemView.findViewById(R.id.photo);
             likeIcon = itemView.findViewById(R.id.like_icon);
             likeText = itemView.findViewById(R.id.like_text);
@@ -98,16 +121,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.PhotoViewHolde
                 @Override
                 public void onClick(View v) {
                     if (photo != null) {
-                        boolean newLikedValue = presenter.likeClicked(photo);
-                        if (newLikedValue) {
-                            likeIcon.getDrawable().setColorFilter(
-                                    v.getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
-                            Animation animation = AnimationUtils.loadAnimation(v.getContext(), R.anim.heart_bounce_anim);
-                            likeIcon.startAnimation(animation);
-                        } else {
-                            likeIcon.getDrawable().setColorFilter(
-                                    v.getResources().getColor(android.R.color.darker_gray), PorterDuff.Mode.SRC_ATOP);
-                        }
+                        presenter.likeClicked(photo);
                     }
                 }
             });

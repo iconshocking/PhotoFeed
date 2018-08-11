@@ -34,7 +34,9 @@ public class PhotoPresenter {
     }
 
     public boolean likeClicked(Response.Photo photo) {
-        return photosModel.likeOrUnlikePhoto(photo);
+        boolean newLikedValue = photosModel.likeOrUnlikePhoto(photo);
+        photoView.likeChangedForPhoto(photo, newLikedValue);
+        return newLikedValue;
     }
 
     public void photoClicked(Response.Photo photo) {

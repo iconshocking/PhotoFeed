@@ -42,7 +42,11 @@ public class Response {
         boolean haveLiked;
 
         public int getCount() {
-            return count;
+            if (haveLiked) {
+                return count + 1;
+            } else {
+                return count;
+            }
         }
 
         public boolean haveLiked() {
